@@ -1,19 +1,32 @@
+let addUser = false;
 const usersURL = "http://localhost:3000/users";
 const postsURL = "http://localhost:3000/posts";
 const likesURL = "http://localhost:3000/likes";
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM content has loaded");
+  const addBtn = document.querySelector("#new-user-btn");
+  const formContainer = document.querySelector("#baskin")
+  
   fetch(postsURL)
     .then((resp) => resp.json())
     .then((postsArray) =>
       postsArray.forEach((post) => {
         // console.log(post)
-         renderPost(post);
+        renderPost(post);
       })
     );
-    // renderLikes()
-});
+
+    addBtn.addEventListener("click", () => {
+        // hide & seek with the form
+        
+        if (addUser = !addUser) {
+          formContainer.style.display = "block";
+        } else {
+          formContainer.style.display = "none";
+        }
+      });
+    })
+  // renderLikes()
 
 function renderUser(user) {
   let list = document.getElementsByTagName("ul")[0];
@@ -23,53 +36,26 @@ function renderUser(user) {
 }
 
 function renderPost(post) {
-  let wrapper = document.querySelector('.container')
-  
+  let wrapper = document.querySelector(".container");
+
   let img = document.createElement("img");
-  img.classList = 'item'
-  img.id = `${post.id}`
+  img.classList = "item";
+  img.id = `${post.id}`;
 
   img.src = post.image;
   wrapper.appendChild(img);
-  renderLikes(post)
-
+  renderLikes(post);
 }
 
 function renderLikes(post) {
-  post.likes.forEach (like => {
-     
-      
-      let newWrapper = document.getElementById(post.id)
-      let displayLikes = document.createElement('p')
-      displayLikes.classList = 'visually-hidden'
-      displayLikes.innerText = `${post.likes.length} likes`
+  post.likes.forEach((like) => {
+    let newWrapper = document.getElementById(post.id);
+    let displayLikes = document.createElement("p");
+    displayLikes.classList = "visually-hidden";
+    displayLikes.innerText = `${post.likes.length} likes`;
 
-    newWrapper.appendChild(displayLikes)})}
+    newWrapper.appendChild(displayLikes);
+  });
+}
 
-
-    function signUp {
-      let button = document.getElementById('sign-up-btn')
-      button.addEventListener('click', () =>{
-        let form = `<form><div class="form-group">
-      <label for="name">Name</label>
-      <input type="name" class="form-control" id="name" placeholder="Enter Name">
-      </form></div>`
-
-      })
-    }
-    
-    
-    // if (like.post_id === post.id){ 
-      
-    //   let newWrapper = document.querySelector('.item')
-    //   let displayLikes = document.createElement('p')
-    // displayLikes.innerText = `${like.number} likes`
-
-    // newWrapper.appendChild(displayLikes)}
-  
-  
-  
-
-  
-  
 
