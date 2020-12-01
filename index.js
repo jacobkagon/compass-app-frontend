@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then((resp) => resp.json())
     .then((postsArray) =>
       postsArray.forEach((post) => {
+        // console.log(post)
          renderPost(post);
       })
     );
@@ -26,16 +27,37 @@ function renderPost(post) {
   
   let img = document.createElement("img");
   img.classList = 'item'
+  img.id = `${post.id}`
 
   img.src = post.image;
   wrapper.appendChild(img);
+  renderLikes(post)
 
-  console.count(post.likes)
 }
 
-// function renderLikes() {
-//   fetch(likesURL)
-//   .then(resp => resp.json())
-//   .then(likes => console.log(likes))
-// }
+function renderLikes(post) {
+  post.likes.forEach (like => {
+     
+      
+      let newWrapper = document.getElementById(post.id)
+      let displayLikes = document.createElement('p')
+      displayLikes.classList = 'visually-hidden'
+      displayLikes.innerText = `${post.likes.length} likes`
+
+    newWrapper.appendChild(displayLikes)})}
+    
+    
+    // if (like.post_id === post.id){ 
+      
+    //   let newWrapper = document.querySelector('.item')
+    //   let displayLikes = document.createElement('p')
+    // displayLikes.innerText = `${like.number} likes`
+
+    // newWrapper.appendChild(displayLikes)}
+  
+  
+  
+
+  
+  
 

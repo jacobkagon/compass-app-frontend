@@ -73,7 +73,23 @@ img {
     object-fit: cover;
 }
 
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
 
+.gallery-item-info {
+  display: none;
+}
+
+.gallery-item-likes {
+  margin-right: 2.2rem;
+}
+
+/* .fasfa-heart {} */
 
 
 
