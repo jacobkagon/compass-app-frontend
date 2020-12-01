@@ -1,5 +1,6 @@
 const usersURL = "http://localhost:3000/users";
 const postsURL = "http://localhost:3000/posts";
+const likesURL = "http://localhost:3000/likes";
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM content has loaded");
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
          renderPost(post);
       })
     );
+    // renderLikes()
 });
 
 function renderUser(user) {
@@ -20,10 +22,20 @@ function renderUser(user) {
 }
 
 function renderPost(post) {
-  let galleryItem = document.querySelector(".container");
+  let wrapper = document.querySelector('.container')
+  
   let img = document.createElement("img");
-  img.classList = "img-fluid";
+  img.classList = 'item'
+
   img.src = post.image;
-  galleryItem.appendChild(img);
+  wrapper.appendChild(img);
+
+  console.count(post.likes)
 }
+
+// function renderLikes() {
+//   fetch(likesURL)
+//   .then(resp => resp.json())
+//   .then(likes => console.log(likes))
+// }
 
