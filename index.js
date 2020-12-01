@@ -45,6 +45,18 @@ function renderLikes(post) {
       displayLikes.innerText = `${post.likes.length} likes`
 
     newWrapper.appendChild(displayLikes)})}
+
+
+    function signUp {
+      let button = document.getElementById('sign-up-btn')
+      button.addEventListener('click', () =>{
+        let form = `<form><div class="form-group">
+      <label for="name">Name</label>
+      <input type="name" class="form-control" id="name" placeholder="Enter Name">
+      </form></div>`
+
+      })
+    }
     
     
     // if (like.post_id === post.id){ 
