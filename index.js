@@ -4,8 +4,14 @@ const postsURL = "http://localhost:3000/posts";
 const likesURL = "http://localhost:3000/likes";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const addBtn = document.querySelector("#new-user-btn");
+  const addBtn = document.querySelector("#sign-up-btn");
   const formContainer = document.querySelector("#baskin")
+
+  const newPostButton = document.getElementById('new-post-btn');
+  newPostButton.addEventListener('click', () => {
+    showNewPostForm()
+  })
+
   
   fetch(postsURL)
     .then((resp) => resp.json())
@@ -49,14 +55,13 @@ function renderPost(post) {
 
 function renderLikes(post) {
   post.likes.forEach (like => {
-     
-      
-      let newWrapper = document.getElementById(post.id)
-      let displayLikes = document.createElement('p')
-      displayLikes.classList = 'visually-hidden'
-      displayLikes.innerText = `${post.likes.length} likes`
-
-    newWrapper.appendChild(displayLikes)})}
+    let newWrapper = document.getElementById(post.id)
+    let displayLikes = document.createElement('p')
+    displayLikes.classList = 'visually-hidden'
+    displayLikes.innerText = `${post.likes.length} likes`
+    newWrapper.appendChild(displayLikes)
+    })
+  }
 
 
   const showNewPostForm = () => {
@@ -66,8 +71,10 @@ function renderLikes(post) {
     pageBackGround.style.position = `fixed`
   }
 
-  const newPostButton = document.getElementById('new-post-btn');
-  newPostButton.addEventListener('click', showNewPostForm())
+  // const newPostButton = document.getElementById('new-post-btn');
+  // newPostButton.addEventListener('click', () => {
+  //   showNewPostForm()
+  // })
     
 
       
@@ -92,14 +99,5 @@ function renderLikes(post) {
   
   
   
-  post.likes.forEach((like) => {
-    let newWrapper = document.getElementById(post.id);
-    let displayLikes = document.createElement("p");
-    displayLikes.classList = "visually-hidden";
-    displayLikes.innerText = `${post.likes.length} likes`;
-
-    newWrapper.appendChild(displayLikes);
-  });
-}
 
 

@@ -7,7 +7,7 @@ h1 {
     text-align: center;
 }
 
-#baskin {
+#baskin1 {
   padding: 1rem;
   width: stretch;
   height: auto;
@@ -105,8 +105,15 @@ img {
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 1;
   align-items: center;
-  display: block;
+  display: none;
 
+}
+
+#page-content{
+  position: auto;
+  height: 100%;
+  width:100%;
+  overflow: scroll;
 }
 
 /* .fasfa-heart {} */
