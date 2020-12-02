@@ -2,17 +2,42 @@ let addUser = false;
 const usersURL = "http://localhost:3000/users";
 const postsURL = "http://localhost:3000/posts";
 const likesURL = "http://localhost:3000/likes";
+let pageBackGround = () => document.getElementById(`page-content`);
+let userModal = () => document.getElementById(`user-modal`);
+let postModal = () => document.getElementById(`post-modal`);
+let userForm = () => document.querySelector(`#user-form`);
 
 document.addEventListener("DOMContentLoaded", () => {
-  const addBtn = document.querySelector("#sign-up-btn");
-  const formContainer = document.querySelector("#baskin")
+  const newPostButton = document.getElementById("new-post-btn");
+  newPostButton.addEventListener("click", () => {
+    showNewPostForm();
+  });
 
-  const newPostButton = document.getElementById('new-post-btn');
-  newPostButton.addEventListener('click', () => {
-    showNewPostForm()
-  })
+  const newUserButton = document.getElementById("sign-up-btn");
+  newUserButton.addEventListener("click", () => {
+    showNewUserForm();
+  });
 
-  
+  const closePost = document.getElementById("close-post");
+  closePost.addEventListener("click", () => {
+    closePostForm();
+  });
+
+  const anotherClosedPost = document.getElementById("tiger-king");
+  anotherClosedPost.addEventListener("click", () => {
+    closePostForm();
+  });
+
+  const closeUser = document.getElementById("close-user-btn");
+  closeUser.addEventListener("click", () => {
+    closeUserForm();
+  });
+
+  const closeNewUser = document.getElementById("close-new-user");
+  closeNewUser.addEventListener("click", () => {
+    closeUserForm();
+  });
+
   fetch(postsURL)
     .then((resp) => resp.json())
     .then((postsArray) =>
@@ -22,17 +47,11 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     );
 
-    addBtn.addEventListener("click", () => {
-        // hide & seek with the form
-        
-        if (addUser = !addUser) {
-          formContainer.style.display = "block";
-        } else {
-          formContainer.style.display = "none";
-        }
-      });
-    })
-  // renderLikes()
+  userForm().addEventListener("submit", (event) => {
+    createUser(event);
+  });
+});
+// renderLikes()
 
 function renderUser(user) {
   let list = document.getElementsByTagName("ul")[0];
@@ -54,50 +73,66 @@ function renderPost(post) {
 }
 
 function renderLikes(post) {
-  post.likes.forEach (like => {
-    let newWrapper = document.getElementById(post.id)
-    let displayLikes = document.createElement('p')
-    displayLikes.classList = 'visually-hidden'
-    displayLikes.innerText = `${post.likes.length} likes`
-    newWrapper.appendChild(displayLikes)
+  post.likes.forEach((like) => {
+    let newWrapper = document.getElementById(post.id);
+    let displayLikes = document.createElement("p");
+    displayLikes.classList = "visually-hidden";
+    displayLikes.innerText = `${post.likes.length} likes`;
+    newWrapper.appendChild(displayLikes);
+  });
+}
+
+const showNewPostForm = () => {
+  postModal().style.display = `block`;
+  pageBackGround().position = `fixed`;
+};
+
+const showNewUserForm = () => {
+  userModal().style.display = `block`;
+  pageBackGround().position = `fixed`;
+};
+
+const closePostForm = () => {
+  postModal().style.display = "none";
+  pageBackGround().position = "auto";
+};
+
+const closeUserForm = () => {
+  userModal().style.display = "none";
+  pageBackGround().position = "auto";
+};
+
+function createUser(event) {
+  event.preventDefault();
+  let userInput = document.getElementById("enter-name").value;
+
+  if (userInput === "") {
+    document.getElementById("enter-name").placeholder =
+      "Please Enter Your Name";
+  } else {
+    let data = {};
+    data.name = userInput;
+
+    fetch(usersURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     })
+      .then((resp) => resp.json())
+      .then((newData) => console.log(newData));
+
+    userForm().reset();
+
+    closeUserForm();
   }
+}
 
+function renderUserName(user) {
+  let jumbotron = document.querySelector(".jumbotron");
 
-  const showNewPostForm = () => {
-    const addNewPostFormModal = document.getElementById(`modal`)
-    const pageBackGround = document.getElementById(`page-content`);
-    addNewPostFormModal.style.display = `block`
-    pageBackGround.style.position = `fixed`
-  }
-
-  // const newPostButton = document.getElementById('new-post-btn');
-  // newPostButton.addEventListener('click', () => {
-  //   showNewPostForm()
-  // })
-    
-
-      
-      
-        //   let form = `<form><div class="form-group">
-      // <label for="name">Name</label>
-      // <input type="name" class="form-control" id="name" placeholder="Enter Name">
-      // </form></div>`
-      
-      
-
-      
-    
-    
-    // if (like.post_id === post.id){ 
-      
-    //   let newWrapper = document.querySelector('.item')
-    //   let displayLikes = document.createElement('p')
-    // displayLikes.innerText = `${like.number} likes`
-
-    // newWrapper.appendChild(displayLikes)}
-  
-  
-  
-
-
+  let signUp = document.getElementById("sign-up-btn");
+  signUp.display = none;
+  p = document.createElement("p");
+  p.innerText = user.name;
+  jumbotron.appendChild(p);
+}
