@@ -89,6 +89,17 @@ img {
   margin-right: 2.2rem;
 }
 
+#modal {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+  align-items: center;
+  display: block;
+
+}
+
 /* .fasfa-heart {} */
 
 

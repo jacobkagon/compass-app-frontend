@@ -47,16 +47,27 @@ function renderLikes(post) {
     newWrapper.appendChild(displayLikes)})}
 
 
-    function signUp {
-      let button = document.getElementById('sign-up-btn')
-      button.addEventListener('click', () =>{
-        let form = `<form><div class="form-group">
-      <label for="name">Name</label>
-      <input type="name" class="form-control" id="name" placeholder="Enter Name">
-      </form></div>`
+  const showNewPostForm = () => {
+    const addNewPostFormModal = document.getElementById(`modal`)
+    const pageBackGround = document.getElementById(`page-content`);
+    addNewPostFormModal.style.display = `block`
+    pageBackGround.style.position = `fixed`
+  }
 
-      })
-    }
+  const newPostButton = document.getElementById('new-post-btn');
+  newPostButton.addEventListener('click', showNewPostForm())
+    
+
+      
+      
+        //   let form = `<form><div class="form-group">
+      // <label for="name">Name</label>
+      // <input type="name" class="form-control" id="name" placeholder="Enter Name">
+      // </form></div>`
+      
+      
+
+      
     
     
     // if (like.post_id === post.id){ 
