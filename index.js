@@ -6,6 +6,8 @@ let pageBackGround = () => document.getElementById(`page-content`);
 let userModal = () => document.getElementById(`user-modal`);
 let postModal = () => document.getElementById(`post-modal`);
 let userForm = () => document.querySelector(`#user-form`);
+let removeSignUp = () => document.getElementById('sign-up-btn')
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const newPostButton = document.getElementById("new-post-btn");
@@ -116,21 +118,21 @@ function createUser(event) {
     fetch(usersURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     })
-      .then((resp) => resp.json())
-      .then((newUser) => console.log(newUser));
+      .then(resp => resp.json())
+      .then(newData => console.log(newData.name))
+      
+      removeSignUp().style.display = 'none'
+      
 
+      
+    }
     userForm().reset();
-
     closeUserForm();
-  }
 }
 
 function renderUserName(user) {
-  if (user.id === session[user_id])
-  
-  
   let jumbotron = document.querySelector(".jumbotron");
 
   let signUp = document.getElementById("sign-up-btn");
