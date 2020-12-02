@@ -119,7 +119,7 @@ function createUser(event) {
       body: JSON.stringify(data),
     })
       .then((resp) => resp.json())
-      .then((newData) => console.log(newData));
+      .then((newUser) => console.log(newUser));
 
     userForm().reset();
 
@@ -128,6 +128,9 @@ function createUser(event) {
 }
 
 function renderUserName(user) {
+  if (user.id === session[user_id])
+  
+  
   let jumbotron = document.querySelector(".jumbotron");
 
   let signUp = document.getElementById("sign-up-btn");
