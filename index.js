@@ -50,9 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     );
 
-    fetch(usersURL)
-  .then(resp => resp.json())
-  .then(user => renderUserName(user.pop()))
+  fetch(usersURL)
+    .then((resp) => resp.json())
+    .then((user) => renderUserName(user.pop()));
 
   userForm().addEventListener("submit", (event) => {
     createUser(event);
@@ -87,35 +87,44 @@ function renderPost(post) {
 
   img.src = post.image;
 
-  let galleryItem = document.createElement('div')
- galleryItem.classList = "gallery-item-info"
+  let galleryItem = document.createElement("div");
+  galleryItem.classList = "gallery-item-info";
 
- let ul = document.createElement('ul')
+  let ul = document.createElement("ul");
 
- let li = document.createElement('li')
- li.classList = "gallery-item-caption"
- li.innerText = `${post.likes.length} likes`
+  let li = document.createElement("li");
+  li.classList = "gallery-item-like";
+  li.innerText = `${post.likes.length} ♥`;
 
+  let userLi = document.createElement("li");
+  userLi.classList = "gallery-item-user";
+  userLi.innerText = `${post.user.name}`;
 
+  let captionLi = document.createElement("li");
+  captionLi.classList = "gallery-item-caption";
 
-  ul.append(li)
-
- galleryItem.appendChild(ul)
-
-  wrapper.insertBefore(gridItem, wrapper.firstChild);
+  let br = document.createElement("br");
   
-  gridItem.append(img, galleryItem);
+  captionLi.innerText = `${post.caption}`
+  
+  if(captionLi.innerText === "null") {
+    ul.append(userLi, br, li)
+  } else {
+  ul.append(userLi, captionLi, br, li);
+  }
+
+  
 
  
 
+  galleryItem.appendChild(ul);
 
+  wrapper.insertBefore(gridItem, wrapper.firstChild);
 
-
-
+  gridItem.append(img, galleryItem);
 
   // renderLikes(post);
 }
-
 
 const showNewPostForm = () => {
   postModal().style.display = `block`;
@@ -155,22 +164,21 @@ function createUser(event) {
     })
       .then((resp) => resp.json())
       .then((newUser) => {
-        localStorage.setItem("user_id", newUser.id)
-        localStorage.setItem("name", newUser.name)
-        renderUserName(newUser)
+        localStorage.setItem("user_id", newUser.id);
+        localStorage.setItem("name", newUser.name);
+        renderUserName(newUser);
       });
-      
 
     userForm().reset();
     closeUserForm();
   }
-//  window.location.reload(true)
+  //  window.location.reload(true)
 }
 
 function renderUserName(user) {
   let jumbotron = document.querySelector(".jumbotron");
   div = document.createElement("div");
-  div.classList = "baskin";;
+  div.classList = "baskin";
   div.id = `${user.id}`;
   jumbotron.appendChild(div);
 }
@@ -197,18 +205,15 @@ function createPost(event) {
     })
       .then((resp) => resp.json())
       .then((newImg) => {
-        localStorage.setItem("imageId", newImg.id)
-        localStorage.setItem("image", newImg.image)
-        localStorage.setItem("caption", newImg.caption)
-        localStorage.setItem("likes", newImg.likes)
-        localStorage.setItem("comments", newImg.comments)
+        localStorage.setItem("imageId", newImg.id);
+        localStorage.setItem("image", newImg.image);
+        localStorage.setItem("caption", newImg.caption);
+        localStorage.setItem("likes", newImg.likes);
+        localStorage.setItem("comments", newImg.comments);
         renderPost(newImg);
-      })
+      });
 
     postForm().reset();
     closePostForm();
   }
 }
-
-
-
