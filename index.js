@@ -83,8 +83,11 @@ function renderPost(post) {
   img.id = `${post.id}`;
 
   img.src = post.image;
-  wrapper.appendChild(gridItem);
+  wrapper.insertBefore(gridItem, wrapper.firstChild);
+  
   gridItem.append(img, likes);
+
+
 
   // renderLikes(post);
 }
@@ -137,7 +140,7 @@ function createUser(event) {
     })
       .then((resp) => resp.json())
       .then((newUser) => {
-        localStorage.setItem("id", newUser.id)
+        localStorage.setItem("user_id", newUser.id)
         localStorage.setItem("name", newUser.name)
         renderUserName(newUser)
       });
@@ -168,7 +171,7 @@ function createPost(event) {
   } else {
     let newPost = {
       image: targetImage,
-      user_id: localStorage.getItem("id"),
+      user_id: localStorage.getItem("user_id"),
       caption: captureCaption,
     };
 
@@ -178,7 +181,14 @@ function createPost(event) {
       body: JSON.stringify(newPost),
     })
       .then((resp) => resp.json())
-      .then((newImg) => renderPost(newImg));
+      .then((newImg) => {
+        localStorage.setItem("imageId", newImg.id)
+        localStorage.setItem("image", newImg.image)
+        localStorage.setItem("caption", newImg.caption)
+        localStorage.setItem("likes", newImg.likes)
+        localStorage.setItem("comments", newImg.comments)
+        renderPost(newImg);
+      })
 
     postForm().reset();
     closePostForm();
@@ -186,6 +196,4 @@ function createPost(event) {
 }
 
 
-// We want the user's id to stay on the site
-// We save it to an id element
-// How do we call back on that id after reloading the page?
+
