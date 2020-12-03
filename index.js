@@ -73,9 +73,9 @@ function renderUser(user) {
 
 function renderPost(post) {
   let wrapper = document.querySelector(".container");
-  let likes = document.createElement("div");
-  likes.classList.add("btn", "btn-primary", "grid-item-info");
-  likes.innerText = `${post.likes.length} Likes`;
+  // let likes = document.createElement("div");
+  // likes.classList.add("btn", "btn-primary", "grid-item-info");
+  // likes.innerText = `${post.likes.length} Likes`;
   let gridItem = document.createElement("div");
   gridItem.className = "grid-item";
   let img = document.createElement("img");
@@ -83,9 +83,30 @@ function renderPost(post) {
   img.id = `${post.id}`;
 
   img.src = post.image;
+
+  let galleryItem = document.createElement('div')
+ galleryItem.classList = "gallery-item-info"
+
+ let ul = document.createElement('ul')
+
+ let li = document.createElement('li')
+ li.classList = "gallery-item-caption"
+ li.innerText = `${post.likes.length} likes`
+
+
+
+  ul.append(li)
+
+ galleryItem.appendChild(ul)
+
   wrapper.insertBefore(gridItem, wrapper.firstChild);
   
-  gridItem.append(img, likes);
+  gridItem.append(img, galleryItem);
+
+ 
+
+
+
 
 
 
