@@ -7,22 +7,21 @@ h1 {
     text-align: center;
 }
 
-#baskin1 {
+/* #baskin1 {
   padding: 1rem;
   width: stretch;
   height: auto;
   display: none;
   background: #515DA2;
   opacity: .8;
-}
+} */
 
 .container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
     justify-content: center;
     gap: 40px 20px;
-    
 
   }
 
