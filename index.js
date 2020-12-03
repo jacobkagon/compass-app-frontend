@@ -69,10 +69,9 @@ function renderUser(user) {
 
 function renderPost(post) {
   let wrapper = document.querySelector(".container");
-  let likes = document.createElement('button')
-  likes.classList.add('btn', 'btn-primary')
+  let likes = document.createElement('div')
+  likes.classList.add('btn', 'btn-primary', 'grid-item-info')
   likes.innerText = `${post.likes.length} Likes`;
-  likes.style.display = 'block'
   let gridItem = document.createElement('div')
   gridItem.className = 'grid-item'
   let img = document.createElement("img");

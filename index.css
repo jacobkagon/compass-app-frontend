@@ -109,6 +109,15 @@ img {
   overflow: scroll;
 }
 
+.grid-item-info {
+  position: absolute;
+  top: middle;
+  left: middle;
+  transform: translate(-50%);
+  
+  
+}
+
 /* .fasfa-heart {} */
 
 
