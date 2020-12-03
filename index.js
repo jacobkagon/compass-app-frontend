@@ -78,6 +78,9 @@ function renderPost(post) {
   // likes.innerText = `${post.likes.length} Likes`;
   let gridItem = document.createElement("div");
   gridItem.className = "grid-item";
+  // let comments = document.createElement('div')
+  // comments.classList.add('btn', 'btn-primary', 'grid-item-info')
+  // comments.innerText = `${post.comments.length} comments`
   let img = document.createElement("img");
   img.classList = "item";
   img.id = `${post.id}`;
@@ -113,15 +116,6 @@ function renderPost(post) {
   // renderLikes(post);
 }
 
-function renderLikes(post) {
-  post.likes.forEach((like) => {
-    let newWrapper = document.getElementById(post.id);
-    let displayLikes = document.createElement("p");
-    displayLikes.classList = "visually-hidden";
-    displayLikes.innerText = `${post.likes.length} likes`;
-    newWrapper.appendChild(displayLikes);
-  });
-}
 
 const showNewPostForm = () => {
   postModal().style.display = `block`;
