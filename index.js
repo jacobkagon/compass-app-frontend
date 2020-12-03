@@ -50,11 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     );
 
+    fetch(usersURL)
+  .then(resp => resp.json())
+  .then(user => renderUserName(user.pop()))
+
   userForm().addEventListener("submit", (event) => {
     createUser(event);
   });
 
-  savePost().addEventListener("click", (event) => {
+  postForm().addEventListener("submit", (event) => {
     createPost(event);
   });
 });
@@ -69,19 +73,19 @@ function renderUser(user) {
 
 function renderPost(post) {
   let wrapper = document.querySelector(".container");
-  let likes = document.createElement('div')
-  likes.classList.add('btn', 'btn-primary', 'grid-item-info')
+  let likes = document.createElement("div");
+  likes.classList.add("btn", "btn-primary", "grid-item-info");
   likes.innerText = `${post.likes.length} Likes`;
-  let gridItem = document.createElement('div')
-  gridItem.className = 'grid-item'
+  let gridItem = document.createElement("div");
+  gridItem.className = "grid-item";
   let img = document.createElement("img");
   img.classList = "item";
   img.id = `${post.id}`;
 
   img.src = post.image;
   wrapper.appendChild(gridItem);
-  gridItem.append(img, likes)
-  
+  gridItem.append(img, likes);
+
   // renderLikes(post);
 }
 
@@ -132,38 +136,56 @@ function createUser(event) {
       body: JSON.stringify(data),
     })
       .then((resp) => resp.json())
-      .then((newUser) => renderUserName(newUser));
+      .then((newUser) => {
+        localStorage.setItem("id", newUser.id)
+        localStorage.setItem("name", newUser.name)
+        renderUserName(newUser)
+      });
+      
 
     userForm().reset();
     closeUserForm();
-    // removeSignUp().style.display = "none";
   }
+//  window.location.reload(true)
 }
 
 function renderUserName(user) {
   let jumbotron = document.querySelector(".jumbotron");
   div = document.createElement("div");
-  div.classList = "baskin";
-  div.id = user.id;
+  div.classList = "baskin";;
+  div.id = `${user.id}`;
   jumbotron.appendChild(div);
 }
 
 function createPost(event) {
   event.preventDefault();
+
   let targetImage = document.getElementById("get-post").value;
   let captureCaption = document.getElementById("post-caption").value;
-  let postId = document.querySelector(".baskin");
-  let newPost = {
-    image: targetImage,
-    user_id: postId.id,
-    caption: captureCaption,
-  };
+  let userId = document.querySelector(".baskin");
+  if (targetImage === "") {
+    document.getElementById("get-post").placeholder = "Please enter a link";
+  } else {
+    let newPost = {
+      image: targetImage,
+      user_id: localStorage.getItem("id"),
+      caption: captureCaption,
+    };
 
-  fetch(postsURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newPost),
-  })
-    .then((resp) => resp.json())
-    .then((newImg) => renderPost(newImg));
+    fetch(postsURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPost),
+    })
+      .then((resp) => resp.json())
+      .then((newImg) => renderPost(newImg));
+
+    postForm().reset();
+    closePostForm();
+  }
 }
+
+
+// We want the user's id to stay on the site
+// We save it to an id element
+// How do we call back on that id after reloading the page?
