@@ -81,13 +81,6 @@ img {
     object-fit: cover;
 }
 
-.visually-hidden {
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px, 1px, 1px, 1px);
-}
 
 .gallery-item-info {
   display: none;
@@ -113,6 +106,15 @@ img {
   height: 100%;
   width:100%;
   overflow: scroll;
+}
+
+.grid-item-info {
+  position: absolute;
+  top: middle;
+  left: middle;
+  transform: translate(-50%);
+  
+  
 }
 
 /* .fasfa-heart {} */

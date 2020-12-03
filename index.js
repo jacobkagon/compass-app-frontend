@@ -69,14 +69,20 @@ function renderUser(user) {
 
 function renderPost(post) {
   let wrapper = document.querySelector(".container");
-
+  let likes = document.createElement('div')
+  likes.classList.add('btn', 'btn-primary', 'grid-item-info')
+  likes.innerText = `${post.likes.length} Likes`;
+  let gridItem = document.createElement('div')
+  gridItem.className = 'grid-item'
   let img = document.createElement("img");
   img.classList = "item";
   img.id = `${post.id}`;
 
   img.src = post.image;
-  wrapper.appendChild(img);
-  renderLikes(post);
+  wrapper.appendChild(gridItem);
+  gridItem.append(img, likes)
+  
+  // renderLikes(post);
 }
 
 function renderLikes(post) {
