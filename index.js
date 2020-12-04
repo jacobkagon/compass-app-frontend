@@ -104,18 +104,32 @@ function renderPost(post) {
   captionLi.classList = "gallery-item-caption";
 
   let br = document.createElement("br");
-  
-  captionLi.innerText = `${post.caption}`
-  
-  if(captionLi.innerText === "null") {
-    ul.append(userLi, br, li)
+  let anotherBr = document.createElement("br");
+  let thirdBreak = document.createElement("br");
+  let fourthBreak = document.createElement("br");
+  let fifthBreak = document.createElement("br");
+  let sixthBreak = document.createElement("br");
+  let seventhBreak = document.createElement("br");
+  let eigthBreak = document.createElement("br");
+  let ninthBreak = document.createElement("br");
+  let tenthBreak = document.createElement("br");
+
+
+  let postDate = document.createElement("p");
+
+  let theDate = new Date(post.created_at);
+  let dateString = theDate.toDateString();
+  postDate.innerText = dateString;
+
+  postDate.classList = "gallery-item-date";
+
+  captionLi.innerText = `${post.caption}`;
+
+  if (captionLi.innerText === "null") {
+    ul.append(userLi, li, br, anotherBr, thirdBreak, fourthBreak, fifthBreak, sixthBreak, seventhBreak, eigthBreak, ninthBreak, tenthBreak, postDate);
   } else {
-  ul.append(userLi, captionLi, br, li);
+    ul.append(userLi, captionLi, li, br, anotherBr, thirdBreak, fourthBreak, fifthBreak, sixthBreak, seventhBreak, eigthBreak, ninthBreak, tenthBreak, postDate);
   }
-
-  
-
- 
 
   galleryItem.appendChild(ul);
 
