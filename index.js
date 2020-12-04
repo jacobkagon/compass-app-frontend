@@ -11,6 +11,7 @@ let postForm = () => document.getElementById("post-form");
 let savePost = () => document.getElementById("save-post");
 
 document.addEventListener("DOMContentLoaded", () => {
+  let removeLikes = localStorage.removeItem('postId')
   const newPostButton = document.getElementById("new-post-btn");
   newPostButton.addEventListener("click", () => {
     showNewPostForm();
@@ -73,6 +74,10 @@ function renderUser(user) {
 
 function renderPost(post) {
   let wrapper = document.querySelector(".container");
+  let likes = document.createElement("div");
+  likes.classList.add("btn", "btn-primary", "grid-item-info");
+  likes.innerText = `${post.likes.length} Likes`;
+  likes.id = `like-button-${post.id}`;
   // let likes = document.createElement("div");
   // likes.classList.add("btn", "btn-primary", "grid-item-info");
   // likes.innerText = `${post.likes.length} Likes`;
@@ -92,23 +97,23 @@ function renderPost(post) {
 
   let ul = document.createElement("ul");
 
-  let li = document.createElement("span");
-  li.classList = "gallery-item-like";
-  li.type = 'button'
+  let li = document.createElement("button");
+  li.classList ="gallery-item-button";
+  li.type = "button";
   li.innerText = `${post.likes.length} ♥`;
 
-  let likeButton = document.createElement('span')
-  likeButton.type = 'button'
-  likeButton.classList = "like-button"
-  likeButton.innerText = "♥"
+  let likeButton = document.createElement("span");
+  likeButton.type = "button";
+  likeButton.classList = "like-button";
+  likeButton.innerText = "♥";
 
   let userLi = document.createElement("li");
   userLi.classList = "gallery-item-user";
   userLi.innerText = `${post.user.name}`;
 
-  li.addEventListener('click', (event) => {
-    addLikes(event)
-  })
+  li.addEventListener("click", () => {
+    addLike(post, li);
+  });
 
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
@@ -124,7 +129,6 @@ function renderPost(post) {
   let ninthBreak = document.createElement("br");
   let tenthBreak = document.createElement("br");
 
-
   let postDate = document.createElement("p");
 
   let theDate = new Date(post.created_at);
@@ -136,9 +140,38 @@ function renderPost(post) {
   captionLi.innerText = `${post.caption}`;
 
   if (captionLi.innerText === "null") {
-    ul.append(userLi, li, br, anotherBr, thirdBreak, fourthBreak, fifthBreak, sixthBreak, seventhBreak, eigthBreak, ninthBreak, tenthBreak, postDate);
+    ul.append(
+      userLi,
+      li,
+      br,
+      anotherBr,
+      thirdBreak,
+      fourthBreak,
+      fifthBreak,
+      sixthBreak,
+      seventhBreak,
+      eigthBreak,
+      ninthBreak,
+      tenthBreak,
+      postDate
+    );
   } else {
-    ul.append(userLi, captionLi, li, br, anotherBr, thirdBreak, fourthBreak, fifthBreak, sixthBreak, seventhBreak, eigthBreak, ninthBreak, tenthBreak, postDate);
+    ul.append(
+      userLi,
+      captionLi,
+      li,
+      br,
+      anotherBr,
+      thirdBreak,
+      fourthBreak,
+      fifthBreak,
+      sixthBreak,
+      seventhBreak,
+      eigthBreak,
+      ninthBreak,
+      tenthBreak,
+      postDate
+    );
   }
 
   galleryItem.appendChild(ul);
@@ -146,8 +179,6 @@ function renderPost(post) {
   wrapper.insertBefore(gridItem, wrapper.firstChild);
 
   gridItem.append(img, galleryItem);
-
-  // renderLikes(post);
 }
 
 const showNewPostForm = () => {
@@ -196,7 +227,6 @@ function createUser(event) {
     userForm().reset();
     closeUserForm();
   }
-  //  window.location.reload(true)
 }
 
 function renderUserName(user) {
@@ -229,11 +259,6 @@ function createPost(event) {
     })
       .then((resp) => resp.json())
       .then((newImg) => {
-        localStorage.setItem("imageId", newImg.id);
-        localStorage.setItem("image", newImg.image);
-        localStorage.setItem("caption", newImg.caption);
-        localStorage.setItem("likes", newImg.likes);
-        localStorage.setItem("comments", newImg.comments);
         renderPost(newImg);
       });
 
@@ -241,4 +266,29 @@ function createPost(event) {
     closePostForm();
   }
 }
+
+function addLike(post, li) {
+  let likeNumber = +li.innerText.split(" ")[0] + 1;
+  let newLike = {
+    user_id: localStorage.getItem("user_id"),
+    post_id: post.id,
+    number: likeNumber
+  };
+  fetch(`${likesURL}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newLike),
+  })
+    .then((resp) => resp.json())
+    .then((newInfo) => {
+      localStorage.setItem("Likes", newInfo.number)
+      localStorage.setItem("postId", newInfo.post_id)
+      li.innerText = `${localStorage.getItem("Likes")} ♥`
+    });
+}
+
+  
+
+
+
 
