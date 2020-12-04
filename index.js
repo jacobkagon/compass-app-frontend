@@ -50,9 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })
     );
 
-    fetch(usersURL)
-  .then(resp => resp.json())
-  .then(user => renderUserName(user.pop()))
+  fetch(usersURL)
+    .then((resp) => resp.json())
+    .then((user) => renderUserName(user.pop()));
 
   userForm().addEventListener("submit", (event) => {
     createUser(event);
@@ -77,6 +77,9 @@ function renderPost(post) {
   likes.classList.add("btn", "btn-primary", "grid-item-info");
   likes.innerText = `${post.likes.length} Likes`;
   likes.id = `like-button-${post.id}`
+  // let likes = document.createElement("div");
+  // likes.classList.add("btn", "btn-primary", "grid-item-info");
+  // likes.innerText = `${post.likes.length} Likes`;
   let gridItem = document.createElement("div");
   gridItem.className = "grid-item";
   // let comments = document.createElement('div')
@@ -87,10 +90,59 @@ function renderPost(post) {
   img.id = `${post.id}`;
 
   img.src = post.image;
-  wrapper.insertBefore(gridItem, wrapper.firstChild);
-  gridItem.append(img, likes);
-}
 
+  let galleryItem = document.createElement("div");
+  galleryItem.classList = "gallery-item-info";
+
+  let ul = document.createElement("ul");
+
+  let li = document.createElement("li");
+  li.classList = "gallery-item-like";
+  li.innerText = `${post.likes.length} ♥`;
+
+  let userLi = document.createElement("li");
+  userLi.classList = "gallery-item-user";
+  userLi.innerText = `${post.user.name}`;
+
+  let captionLi = document.createElement("li");
+  captionLi.classList = "gallery-item-caption";
+
+  let br = document.createElement("br");
+  let anotherBr = document.createElement("br");
+  let thirdBreak = document.createElement("br");
+  let fourthBreak = document.createElement("br");
+  let fifthBreak = document.createElement("br");
+  let sixthBreak = document.createElement("br");
+  let seventhBreak = document.createElement("br");
+  let eigthBreak = document.createElement("br");
+  let ninthBreak = document.createElement("br");
+  let tenthBreak = document.createElement("br");
+
+
+  let postDate = document.createElement("p");
+
+  let theDate = new Date(post.created_at);
+  let dateString = theDate.toDateString();
+  postDate.innerText = dateString;
+
+  postDate.classList = "gallery-item-date";
+
+  captionLi.innerText = `${post.caption}`;
+
+  if (captionLi.innerText === "null") {
+    ul.append(userLi, li, br, anotherBr, thirdBreak, fourthBreak, fifthBreak, sixthBreak, seventhBreak, eigthBreak, ninthBreak, tenthBreak, postDate);
+  } else {
+    ul.append(userLi, captionLi, li, br, anotherBr, thirdBreak, fourthBreak, fifthBreak, sixthBreak, seventhBreak, eigthBreak, ninthBreak, tenthBreak, postDate);
+  }
+
+  galleryItem.appendChild(ul);
+
+  wrapper.insertBefore(gridItem, wrapper.firstChild);
+
+  gridItem.append(img, galleryItem);
+
+  // renderLikes(post);
+}
 
 const showNewPostForm = () => {
   postModal().style.display = `block`;
@@ -130,22 +182,21 @@ function createUser(event) {
     })
       .then((resp) => resp.json())
       .then((newUser) => {
-        localStorage.setItem("user_id", newUser.id)
-        localStorage.setItem("name", newUser.name)
-        renderUserName(newUser)
+        localStorage.setItem("user_id", newUser.id);
+        localStorage.setItem("name", newUser.name);
+        renderUserName(newUser);
       });
-      
 
     userForm().reset();
     closeUserForm();
   }
-//  window.location.reload(true)
+  //  window.location.reload(true)
 }
 
 function renderUserName(user) {
   let jumbotron = document.querySelector(".jumbotron");
   div = document.createElement("div");
-  div.classList = "baskin";;
+  div.classList = "baskin";
   div.id = `${user.id}`;
   jumbotron.appendChild(div);
 }
@@ -172,34 +223,31 @@ function createPost(event) {
     })
       .then((resp) => resp.json())
       .then((newImg) => {
-        localStorage.setItem("imageId", newImg.id)
-        localStorage.setItem("image", newImg.image)
-        localStorage.setItem("caption", newImg.caption)
-        localStorage.setItem("likes", newImg.likes)
-        localStorage.setItem("comments", newImg.comments)
+        localStorage.setItem("imageId", newImg.id);
+        localStorage.setItem("image", newImg.image);
+        localStorage.setItem("caption", newImg.caption);
+        localStorage.setItem("likes", newImg.likes);
+        localStorage.setItem("comments", newImg.comments);
         renderPost(newImg);
-      })
+      });
 
     postForm().reset();
     closePostForm();
   }
 }
 
-function addLike(post){
-  let likeButton = document.getElementById(`like-button-${post.id}`)
-  likeButton.innerText = `${post.likes + 1} Likes`
-  let newLike = {
-    user_id: localStorage.getItem('user_id'),
-    post_id: localStorage.getItem('post_id')
-  }
-  likeButton.addEventListener('click', () => {
-    fetch(likesURL, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify()
-    }
-  })
-}
-
-
-
+// function addLike(post){
+//   let likeButton = document.getElementById(`like-button-${post.id}`)
+//   likeButton.innerText = `${post.likes + 1} Likes`
+//   let newLike = {
+//     user_id: localStorage.getItem('user_id'),
+//     post_id: localStorage.getItem('post_id')
+//   }
+//   likeButton.addEventListener('click', () => {
+//     fetch(likesURL, {
+//       method: 'POST',
+//       headers: { "Content-Type": "application/json" },
+//       // body: JSON.stringify()
+//     }
+//   })
+// }
