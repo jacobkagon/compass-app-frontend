@@ -92,13 +92,23 @@ function renderPost(post) {
 
   let ul = document.createElement("ul");
 
-  let li = document.createElement("li");
+  let li = document.createElement("span");
   li.classList = "gallery-item-like";
+  li.type = 'button'
   li.innerText = `${post.likes.length} ♥`;
+
+  let likeButton = document.createElement('span')
+  likeButton.type = 'button'
+  likeButton.classList = "like-button"
+  likeButton.innerText = "♥"
 
   let userLi = document.createElement("li");
   userLi.classList = "gallery-item-user";
   userLi.innerText = `${post.user.name}`;
+
+  li.addEventListener('click', (event) => {
+    addLikes(event)
+  })
 
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
@@ -231,3 +241,4 @@ function createPost(event) {
     closePostForm();
   }
 }
+
