@@ -2,6 +2,7 @@ let addUser = false;
 const usersURL = "http://localhost:3000/users";
 const postsURL = "http://localhost:3000/posts";
 const likesURL = "http://localhost:3000/likes";
+const commentsURL = 'http://localhost:3000/comments';
 let pageBackGround = () => document.getElementById(`page-content`);
 let userModal = () => document.getElementById(`user-modal`);
 let postModal = () => document.getElementById(`post-modal`);
@@ -91,6 +92,9 @@ function renderPost(post) {
   img.id = `${post.id}`;
 
   img.src = post.image;
+  img.addEventListener('click', {
+
+  })
 
   let galleryItem = document.createElement("div");
   galleryItem.classList = "gallery-item-info";
@@ -113,7 +117,13 @@ function renderPost(post) {
 
   li.addEventListener("click", () => {
     addLike(post, li);
+
   });
+  const commentButton = document.createElement('button')
+  commentButton.innerText = 'View Comments'
+  commentButton.addEventListener('click', () => {
+    addCommentForm(post)
+  })
 
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
@@ -143,6 +153,7 @@ function renderPost(post) {
     ul.append(
       userLi,
       li,
+      commentButton,
       br,
       anotherBr,
       thirdBreak,
@@ -160,6 +171,7 @@ function renderPost(post) {
       userLi,
       captionLi,
       li,
+      commentButton,
       br,
       anotherBr,
       thirdBreak,
@@ -286,6 +298,24 @@ function addLike(post, li) {
       li.innerText = `${localStorage.getItem("Likes")} ♥`
     });
 }
+
+function addCommentForm(post){
+  let commentModal = document.getElementById('comment-modal')
+  commentModal.style.display = 'block'
+  let ul = document.getElementById('comments-list');
+  fetch(commentsURL)
+  .then(resp => resp.json())
+  .then(comArray => comArray.forEach(comment => {
+  let li = document.createElement('li')
+  li.innerText = comment.body
+  if (comment.post_id === post.id){
+  ul.appendChild(li)
+  }
+  
+}))
+}
+
+
 
   
 
