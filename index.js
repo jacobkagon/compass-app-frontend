@@ -76,6 +76,7 @@ function renderPost(post) {
   let likes = document.createElement("div");
   likes.classList.add("btn", "btn-primary", "grid-item-info");
   likes.innerText = `${post.likes.length} Likes`;
+  likes.id = `like-button-${post.id}`
   let gridItem = document.createElement("div");
   gridItem.className = "grid-item";
   // let comments = document.createElement('div')
@@ -182,6 +183,22 @@ function createPost(event) {
     postForm().reset();
     closePostForm();
   }
+}
+
+function addLike(post){
+  let likeButton = document.getElementById(`like-button-${post.id}`)
+  likeButton.innerText = `${post.likes + 1} Likes`
+  let newLike = {
+    user_id: localStorage.getItem('user_id'),
+    post_id: localStorage.getItem('post_id')
+  }
+  likeButton.addEventListener('click', () => {
+    fetch(likesURL, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify()
+    }
+  })
 }
 
 

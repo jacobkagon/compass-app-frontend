@@ -89,10 +89,6 @@ img {
   display: none;
 }
 
-.gallery-item-likes {
-  margin-right: 2.2rem;
-}
-
 #modal {
   position: fixed;
   height: 100%;
