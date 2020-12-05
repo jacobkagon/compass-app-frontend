@@ -2,7 +2,7 @@ let addUser = false;
 const usersURL = "http://localhost:3000/users";
 const postsURL = "http://localhost:3000/posts";
 const likesURL = "http://localhost:3000/likes";
-const commentsURL = 'http://localhost:3000/comments';
+const commentsURL = "http://localhost:3000/comments";
 let pageBackGround = () => document.getElementById(`page-content`);
 let userModal = () => document.getElementById(`user-modal`);
 let postModal = () => document.getElementById(`post-modal`);
@@ -10,9 +10,11 @@ let userForm = () => document.querySelector(`#user-form`);
 let removeSignUp = () => document.getElementById("sign-up-btn");
 let postForm = () => document.getElementById("post-form");
 let savePost = () => document.getElementById("save-post");
+let commentModal = () => document.getElementById("comment-modal");
+let commentForm = () => document.getElementById("comment-form");
 
 document.addEventListener("DOMContentLoaded", () => {
-  let removeLikes = localStorage.removeItem('postId')
+  let removeLikes = localStorage.removeItem("postId");
   const newPostButton = document.getElementById("new-post-btn");
   newPostButton.addEventListener("click", () => {
     showNewPostForm();
@@ -41,6 +43,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeNewUser = document.getElementById("close-new-user");
   closeNewUser.addEventListener("click", () => {
     closeUserForm();
+  });
+
+  const closeComments = document.getElementById("sbmt");
+  closeComments.addEventListener("click", () => {
+    closeCommentsForm();
+  });
+
+  const CloseCommentButton = document.getElementById("close-comment-btn");
+  CloseCommentButton.addEventListener("click", () => {
+    closeCommentsForm();
+  });
+
+  const anotherClosedCommentButton = document.getElementById("close-new-comment");
+  anotherClosedCommentButton.addEventListener("click", () => {
+    closeCommentsForm();
   });
 
   fetch(postsURL)
@@ -92,9 +109,7 @@ function renderPost(post) {
   img.id = `${post.id}`;
 
   img.src = post.image;
-  img.addEventListener('click', {
-
-  })
+  img.addEventListener("click", {});
 
   let galleryItem = document.createElement("div");
   galleryItem.classList = "gallery-item-info";
@@ -102,7 +117,7 @@ function renderPost(post) {
   let ul = document.createElement("ul");
 
   let li = document.createElement("button");
-  li.classList ="gallery-item-button";
+  li.classList = "gallery-item-button";
   li.type = "button";
   li.innerText = `${post.likes.length} ♥`;
 
@@ -117,13 +132,12 @@ function renderPost(post) {
 
   li.addEventListener("click", () => {
     addLike(post, li);
-
   });
-  const commentButton = document.createElement('button')
-  commentButton.innerText = 'View Comments'
-  commentButton.addEventListener('click', () => {
-    addCommentForm(post)
-  })
+  const commentButton = document.createElement("button");
+  commentButton.innerText = "View Comments";
+  commentButton.addEventListener("click", () => {
+    addCommentForm(post);
+  });
 
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
@@ -213,6 +227,11 @@ const closeUserForm = () => {
   pageBackGround().position = "auto";
 };
 
+const closeCommentsForm = () => {
+  commentModal().style.display = "none";
+  pageBackGround().position = "auto";
+};
+
 function createUser(event) {
   event.preventDefault();
   let userInput = document.getElementById("enter-name").value;
@@ -284,7 +303,7 @@ function addLike(post, li) {
   let newLike = {
     user_id: localStorage.getItem("user_id"),
     post_id: post.id,
-    number: likeNumber
+    number: likeNumber,
   };
   fetch(`${likesURL}`, {
     method: "POST",
@@ -293,32 +312,26 @@ function addLike(post, li) {
   })
     .then((resp) => resp.json())
     .then((newInfo) => {
-      localStorage.setItem("Likes", newInfo.number)
-      localStorage.setItem("postId", newInfo.post_id)
-      li.innerText = `${localStorage.getItem("Likes")} ♥`
+      localStorage.setItem("Likes", newInfo.number);
+      localStorage.setItem("postId", newInfo.post_id);
+      li.innerText = `${localStorage.getItem("Likes")} ♥`;
     });
 }
 
-function addCommentForm(post){
-  let commentModal = document.getElementById('comment-modal')
-  commentModal.style.display = 'block'
-  let ul = document.getElementById('comments-list');
+function addCommentForm(post) {
+  let commentModal = document.getElementById("comment-modal");
+  commentModal.style.display = "block";
+  let ul = document.getElementById("comments-list");
   fetch(commentsURL)
-  .then(resp => resp.json())
-  .then(comArray => comArray.forEach(comment => {
-  let li = document.createElement('li')
-  li.innerText = comment.body
-  if (comment.post_id === post.id){
-  ul.appendChild(li)
-  }
-  
-}))
+    .then((resp) => resp.json())
+    .then((comArray) =>
+      comArray.forEach((comment) => {
+        let li = document.createElement("li");
+        li.innerText = comment.body;
+        if (comment.post_id === post.id) {
+          ul.appendChild(li);
+          closeCommentsForm();
+        }
+      })
+    );
 }
-
-
-
-  
-
-
-
-
