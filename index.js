@@ -299,6 +299,13 @@ function createPost(event) {
 }
 
 function addLike(post, li) {
+
+  let map = post.likes.map(like => like.user_id)
+
+    if (map.includes(+localStorage.getItem("user_id"))) {
+      alert("You can only like a post once")
+    } else {
+ 
   let likeNumber = +li.innerText.split(" ")[0] + 1;
   let newLike = {
     user_id: localStorage.getItem("user_id"),
@@ -316,6 +323,8 @@ function addLike(post, li) {
       localStorage.setItem("postId", newInfo.post_id);
       li.innerText = `${localStorage.getItem("Likes")} ♥`;
     });
+
+    }
 }
 
 function addCommentForm(post) {
