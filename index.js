@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
     closeUserForm();
   });
 
-  const closeComments = document.getElementById("sbmt");
-  closeComments.addEventListener("click", () => {
+  const closeComments = document.getElementById("save-comment");
+  closeComments.addEventListener("submit", () => {
     closeCommentsForm();
   });
 
@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   postForm().addEventListener("submit", (event) => {
     createPost(event);
   });
+
 });
 // renderLikes()
 
@@ -137,12 +138,16 @@ function renderPost(post) {
   commentButton.innerText = "View Comments";
   commentButton.addEventListener("click", () => {
     addCommentForm(post);
-    saveComment(post)
   });
 
+  let commentButt
+
+  
+  // saveComment(post, event)
+  
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
-
+  
   let br = document.createElement("br");
   let anotherBr = document.createElement("br");
   let thirdBreak = document.createElement("br");
@@ -153,17 +158,17 @@ function renderPost(post) {
   let eigthBreak = document.createElement("br");
   let ninthBreak = document.createElement("br");
   let tenthBreak = document.createElement("br");
-
+  
   let postDate = document.createElement("p");
-
+  
   let theDate = new Date(post.created_at);
   let dateString = theDate.toDateString();
   postDate.innerText = dateString;
-
+  
   postDate.classList = "gallery-item-date";
-
+  
   captionLi.innerText = `${post.caption}`;
-
+  
   if (captionLi.innerText === "null") {
     ul.append(
       userLi,
@@ -180,95 +185,96 @@ function renderPost(post) {
       ninthBreak,
       tenthBreak,
       postDate
-    );
-  } else {
-    ul.append(
-      userLi,
-      captionLi,
-      li,
-      commentButton,
-      br,
-      anotherBr,
-      thirdBreak,
-      fourthBreak,
-      fifthBreak,
+      );
+    } else {
+      ul.append(
+        userLi,
+        captionLi,
+        li,
+        commentButton,
+        br,
+        anotherBr,
+        thirdBreak,
+        fourthBreak,
+        fifthBreak,
       sixthBreak,
       seventhBreak,
       eigthBreak,
       ninthBreak,
       tenthBreak,
       postDate
-    );
+      );
+    }
+    
+    galleryItem.appendChild(ul);
+    
+    wrapper.insertBefore(gridItem, wrapper.firstChild);
+    
+    gridItem.append(img, galleryItem);
   }
-
-  galleryItem.appendChild(ul);
-
-  wrapper.insertBefore(gridItem, wrapper.firstChild);
-
-  gridItem.append(img, galleryItem);
-}
-
-const showNewPostForm = () => {
-  postModal().style.display = `block`;
-  pageBackGround().position = `fixed`;
-};
-
-const showNewUserForm = () => {
-  userModal().style.display = `block`;
-  pageBackGround().position = `fixed`;
-};
-
-const closePostForm = () => {
-  postModal().style.display = "none";
-  pageBackGround().position = "auto";
-};
-
-const closeUserForm = () => {
-  userModal().style.display = "none";
-  pageBackGround().position = "auto";
-};
-
-const closeCommentsForm = () => {
-  commentModal().style.display = "none";
-  pageBackGround().position = "auto";
-};
-
-function createUser(event) {
-  event.preventDefault();
-  let userInput = document.getElementById("enter-name").value;
-
-  if (userInput === "") {
-    document.getElementById("enter-name").placeholder =
+  
+  const showNewPostForm = () => {
+    postModal().style.display = `block`;
+    pageBackGround().position = `fixed`;
+  };
+  
+  const showNewUserForm = () => {
+    userModal().style.display = `block`;
+    pageBackGround().position = `fixed`;
+  };
+  
+  const closePostForm = () => {
+    postModal().style.display = "none";
+    pageBackGround().position = "auto";
+  };
+  
+  const closeUserForm = () => {
+    userModal().style.display = "none";
+    pageBackGround().position = "auto";
+  };
+  
+  const closeCommentsForm = () => {
+    commentModal().style.display = "none";
+    pageBackGround().position = "auto";
+  };
+  
+  function createUser(event) {
+    event.preventDefault();
+    let userInput = document.getElementById("enter-name").value;
+    
+    if (userInput === "") {
+      document.getElementById("enter-name").placeholder =
       "Please Enter Your Name";
-  } else {
-    let data = {};
-    data.name = userInput;
-
-    fetch(usersURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
+    } else {
+      let data = {};
+      data.name = userInput;
+      
+      fetch(usersURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
       .then((resp) => resp.json())
       .then((newUser) => {
         localStorage.setItem("user_id", newUser.id);
         localStorage.setItem("name", newUser.name);
         renderUserName(newUser);
       });
-
-    userForm().reset();
-    closeUserForm();
+      
+      userForm().reset();
+      closeUserForm();
+    }
   }
-}
 
-function renderUserName(user) {
-  let jumbotron = document.querySelector(".jumbotron");
-  div = document.createElement("div");
-  div.classList = "baskin";
-  div.id = `${user.id}`;
-  jumbotron.appendChild(div);
-}
 
+  function renderUserName(user) {
+    let jumbotron = document.querySelector(".jumbotron");
+    div = document.createElement("div");
+    div.classList = "baskin";
+    div.id = `${user.id}`;
+    jumbotron.appendChild(div);
+  }
+  
 function createPost(event) {
   event.preventDefault();
 
@@ -343,22 +349,39 @@ function addCommentForm(post) {
         }
       })
     );
-}
+    commentForm().addEventListener('submit', (event) => {
+    saveComment(post, event);
+    })
+  }
 
-function saveComment(post){
+    
+
+function saveComment(post, event){
+  event.preventDefault();
+  let list = document.getElementById("comments-list");
+  
+  let listItem = document.createElement('li')
   const newComment = document.getElementById('add-comment').value
+  listItem.innerText = newComment
+  list.appendChild(listItem)
   const commentSave = {
     body: newComment,
     user_id: localStorage.getItem("user_id"),
     post_id: post.id
   }
+  
+  
   const saveButton = document.getElementById('save-comment')
-  saveButton.addEventListener('submit', (event) => {
+  // saveButton.addEventListener('submit', (event) => {
     fetch(commentsURL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        'Accept': 'application/json'
+      },
       body: JSON.stringify(commentSave),
-    }).then(resp => resp.json)
+    }).then(resp => resp.json())
     .then(newComment => console.log(newComment))
-  })
+  
+  
 }
