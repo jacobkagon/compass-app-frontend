@@ -137,6 +137,7 @@ function renderPost(post) {
   commentButton.innerText = "View Comments";
   commentButton.addEventListener("click", () => {
     addCommentForm(post);
+    saveComment(post)
   });
 
   let captionLi = document.createElement("li");
@@ -323,8 +324,7 @@ function addLike(post, li) {
       localStorage.setItem("postId", newInfo.post_id);
       li.innerText = `${localStorage.getItem("Likes")} ♥`;
     });
-
-    }
+  }
 }
 
 function addCommentForm(post) {
@@ -339,8 +339,26 @@ function addCommentForm(post) {
         li.innerText = comment.body;
         if (comment.post_id === post.id) {
           ul.appendChild(li);
-          closeCommentsForm();
+          // closeCommentsForm();
         }
       })
     );
+}
+
+function saveComment(post){
+  const newComment = document.getElementById('add-comment').value
+  const commentSave = {
+    body: newComment,
+    user_id: localStorage.getItem("user_id"),
+    post_id: post.id
+  }
+  const saveButton = document.getElementById('save-comment')
+  saveButton.addEventListener('submit', (event) => {
+    fetch(commentsURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(commentSave),
+    }).then(resp => resp.json)
+    .then(newComment => console.log(newComment))
+  })
 }
