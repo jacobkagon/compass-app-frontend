@@ -111,7 +111,6 @@ function renderPost(post) {
   img.id = `${post.id}`;
 
   img.src = post.image;
-  img.addEventListener("click", {});
 
   let galleryItem = document.createElement("div");
   galleryItem.classList = "gallery-item-info";
@@ -336,11 +335,7 @@ function addLike(post, li) {
 function addCommentForm(post, event) {
   let clearCommentList = document.getElementById('comments-list')
 
-  function removeAllChildNodes(parent) {
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-}
+
 removeAllChildNodes(clearCommentList)
 
   let commentModal = document.getElementById("comment-modal");
@@ -358,21 +353,24 @@ removeAllChildNodes(clearCommentList)
         }
       })
     );
-    commentForm().addEventListener('submit', (event) => {
+    const saveButton = document.getElementById('save-comment')
+
+    saveButton.addEventListener('click', (event) => {
     saveComment(post, event);
-    })
+  })
+  commentForm().reset()
   }
 
     
 
 function saveComment(post, event){
   event.preventDefault();
-  let list = document.getElementById("comments-list");
+  // let list = document.getElementById("comments-list");
   
-  let listItem = document.createElement('li')
+  // let listItem = document.createElement('li')
+  // listItem.innerText = newComment
+  // list.appendChild(listItem)
   const newComment = document.getElementById('add-comment').value
-  listItem.innerText = newComment
-  list.appendChild(listItem)
   const commentSave = {
     body: newComment,
     user_id: localStorage.getItem("user_id"),
@@ -380,17 +378,33 @@ function saveComment(post, event){
   }
   
   
-  const saveButton = document.getElementById('save-comment')
     fetch(commentsURL, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
-        'Accept': 'application/json'
       },
       body: JSON.stringify(commentSave),
     }).then(resp => resp.json())
-    .then(newComment => console.log(newComment))
+    .then(newComment => renderComment(newComment))
   
   
 }
+
+function renderComment(comment){
+  let list = document.getElementById("comments-list");
+  const newComment = document.getElementById('add-comment').value
+
+  let listItem = document.createElement('li')
+  listItem.innerText = newComment
+  list.appendChild(listItem)
+
+}
+
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+}
+
+
 
