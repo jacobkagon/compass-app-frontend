@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const CloseCommentButton = document.getElementById("close-comment-btn");
   CloseCommentButton.addEventListener("click", () => {
     closeCommentsForm();
+
   });
 
   const anotherClosedCommentButton = document.getElementById("close-new-comment");
@@ -137,13 +138,18 @@ function renderPost(post) {
   const commentButton = document.createElement("button");
   commentButton.innerText = "View Comments";
   commentButton.addEventListener("click", () => {
+    let clearCommentList = document.getElementById('comments-list')
+    function removeAllChildNodes(parent) {
+      while (parent.firstChild) {
+          parent.removeChild(parent.firstChild);
+      }
+  }
+    removeAllChildNodes(clearCommentList)
     addCommentForm(post);
   });
 
-  let commentButt
 
   
-  // saveComment(post, event)
   
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
@@ -333,7 +339,9 @@ function addLike(post, li) {
   }
 }
 
-function addCommentForm(post) {
+function addCommentForm(post, event) {
+  
+
   let commentModal = document.getElementById("comment-modal");
   commentModal.style.display = "block";
   let ul = document.getElementById("comments-list");
@@ -372,7 +380,6 @@ function saveComment(post, event){
   
   
   const saveButton = document.getElementById('save-comment')
-  // saveButton.addEventListener('submit', (event) => {
     fetch(commentsURL, {
       method: "POST",
       headers: { 
@@ -385,3 +392,4 @@ function saveComment(post, event){
   
   
 }
+
