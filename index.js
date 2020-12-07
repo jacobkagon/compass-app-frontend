@@ -53,10 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const CloseCommentButton = document.getElementById("close-comment-btn");
   CloseCommentButton.addEventListener("click", () => {
     closeCommentsForm();
-
   });
 
-  const anotherClosedCommentButton = document.getElementById("close-new-comment");
+  const anotherClosedCommentButton = document.getElementById(
+    "close-new-comment"
+  );
   anotherClosedCommentButton.addEventListener("click", () => {
     closeCommentsForm();
   });
@@ -81,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
   postForm().addEventListener("submit", (event) => {
     createPost(event);
   });
-
 });
 // renderLikes()
 
@@ -118,7 +118,7 @@ function renderPost(post) {
   let ul = document.createElement("ul");
 
   let li = document.createElement("button");
-  li.classList = "gallery-item-button";
+  li.classList = "likes-button";
   li.type = "button";
   li.innerText = `${post.likes.length} ♥`;
 
@@ -135,18 +135,15 @@ function renderPost(post) {
     addLike(post, li);
   });
   const commentButton = document.createElement("button");
-  commentButton.innerText = "View Comments";
+  commentButton.classList = "comment-button"
+  // commentButton.innerText = "Comments";
   commentButton.addEventListener("click", () => {
-
     addCommentForm(post);
   });
 
-
-  
-  
   let captionLi = document.createElement("li");
   captionLi.classList = "gallery-item-caption";
-  
+
   let br = document.createElement("br");
   let anotherBr = document.createElement("br");
   let thirdBreak = document.createElement("br");
@@ -157,17 +154,17 @@ function renderPost(post) {
   let eigthBreak = document.createElement("br");
   let ninthBreak = document.createElement("br");
   let tenthBreak = document.createElement("br");
-  
+
   let postDate = document.createElement("p");
-  
+
   let theDate = new Date(post.created_at);
   let dateString = theDate.toDateString();
   postDate.innerText = dateString;
-  
+
   postDate.classList = "gallery-item-date";
-  
+
   captionLi.innerText = `${post.caption}`;
-  
+
   if (captionLi.innerText === "null") {
     ul.append(
       userLi,
@@ -184,227 +181,212 @@ function renderPost(post) {
       ninthBreak,
       tenthBreak,
       postDate
-      );
-    } else {
-      ul.append(
-        userLi,
-        captionLi,
-        li,
-        commentButton,
-        br,
-        anotherBr,
-        thirdBreak,
-        fourthBreak,
-        fifthBreak,
+    );
+  } else {
+    ul.append(
+      userLi,
+      captionLi,
+      li,
+      commentButton,
+      br,
+      anotherBr,
+      thirdBreak,
+      fourthBreak,
+      fifthBreak,
       sixthBreak,
       seventhBreak,
       eigthBreak,
       ninthBreak,
       tenthBreak,
       postDate
-      );
-    }
-    
-    galleryItem.appendChild(ul);
-    
-    wrapper.insertBefore(gridItem, wrapper.firstChild);
-    
-    gridItem.append(img, galleryItem);
+    );
   }
-  
-  const showNewPostForm = () => {
-    postModal().style.display = `block`;
-    pageBackGround().position = `fixed`;
-  };
-  
-  const showNewUserForm = () => {
-    userModal().style.display = `block`;
-    pageBackGround().position = `fixed`;
-  };
-  
-  const closePostForm = () => {
-    postModal().style.display = "none";
-    pageBackGround().position = "auto";
-  };
-  
-  const closeUserForm = () => {
-    userModal().style.display = "none";
-    pageBackGround().position = "auto";
-  };
-  
-  const closeCommentsForm = () => {
-    commentModal().style.display = "none";
-    pageBackGround().position = "auto";
-  };
-  
-  function createUser(event) {
-    event.preventDefault();
-    let userInput = document.getElementById("enter-name").value;
-    
-    if (userInput === "") {
-      document.getElementById("enter-name").placeholder =
-      "Please Enter Your Name";
-    } else {
-      let data = {};
-      data.name = userInput;
-      
-      fetch(usersURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+
+  galleryItem.appendChild(ul);
+
+  wrapper.insertBefore(gridItem, wrapper.firstChild);
+
+  gridItem.append(img, galleryItem);
+}
+
+const showNewPostForm = () => {
+  postModal().style.display = `block`;
+  pageBackGround().position = `fixed`;
+};
+
+const showNewUserForm = () => {
+  userModal().style.display = `block`;
+  pageBackGround().position = `fixed`;
+};
+
+const closePostForm = () => {
+  postModal().style.display = "none";
+  pageBackGround().position = "auto";
+};
+
+const closeUserForm = () => {
+  userModal().style.display = "none";
+  pageBackGround().position = "auto";
+};
+
+const closeCommentsForm = () => {
+  commentModal().style.display = "none";
+  pageBackGround().position = "auto";
+};
+
+function createUser(event) {
+  event.preventDefault();
+  let userInput = document.getElementById("enter-name").value;
+
+  if (userInput === "") {
+    alert("Please enter your name");
+  } else {
+    let data = {};
+    data.name = userInput;
+
+    fetch(usersURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
       .then((resp) => resp.json())
       .then((newUser) => {
         localStorage.setItem("user_id", newUser.id);
         localStorage.setItem("name", newUser.name);
         renderUserName(newUser);
       });
-      
-      userForm().reset();
-      closeUserForm();
-    }
-  }
 
-
-  function renderUserName(user) {
-    let jumbotron = document.querySelector(".jumbotron");
-    div = document.createElement("div");
-    div.classList = "baskin";
-    div.id = `${user.id}`;
-    jumbotron.appendChild(div);
+    userForm().reset();
+    closeUserForm();
   }
-  
+}
+
+function renderUserName(user) {
+  let jumbotron = document.querySelector(".jumbotron");
+  div = document.createElement("div");
+  div.classList = "baskin";
+  div.id = `${user.id}`;
+  jumbotron.appendChild(div);
+}
+
 function createPost(event) {
   event.preventDefault();
-
-  let targetImage = document.getElementById("get-post").value;
-  let captureCaption = document.getElementById("post-caption").value;
-  let userId = document.querySelector(".baskin");
-  if (targetImage === "") {
-    document.getElementById("get-post").placeholder = "Please enter a link";
+  if (localStorage.getItem("user_id" == null)) {
+    alert("You must login before uploading a photo");
   } else {
-    let newPost = {
-      image: targetImage,
-      user_id: localStorage.getItem("user_id"),
-      caption: captureCaption,
-    };
+    let targetImage = document.getElementById("get-post").value;
+    let captureCaption = document.getElementById("post-caption").value;
+    if (targetImage === "") {
+      alert("Please enter a link");
+    } else {
+      let newPost = {
+        image: targetImage,
+        user_id: localStorage.getItem("user_id"),
+        caption: captureCaption,
+      };
 
-    fetch(postsURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newPost),
-    })
-      .then((resp) => resp.json())
-      .then((newImg) => {
-        renderPost(newImg);
-      });
+      fetch(postsURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newPost),
+      })
+        .then((resp) => resp.json())
+        .then((newImg) => {
+          renderPost(newImg);
+        });
 
-    postForm().reset();
-    closePostForm();
+      postForm().reset();
+      closePostForm();
+    }
   }
 }
 
 function addLike(post, li) {
+  let map = post.likes.map((like) => like.user_id);
 
-  let map = post.likes.map(like => like.user_id)
-
-    if (map.includes(+localStorage.getItem("user_id"))) {
-      alert("You can only like a post once")
-    } else {
- 
-  let likeNumber = +li.innerText.split(" ")[0] + 1;
-  let newLike = {
-    user_id: localStorage.getItem("user_id"),
-    post_id: post.id,
-    number: likeNumber,
-  };
-  fetch(`${likesURL}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newLike),
-  })
-    .then((resp) => resp.json())
-    .then((newInfo) => {
-      localStorage.setItem("Likes", newInfo.number);
-      localStorage.setItem("postId", newInfo.post_id);
-      li.innerText = `${localStorage.getItem("Likes")} ♥`;
-    });
+  if (map.includes(+localStorage.getItem("user_id"))) {
+    alert("You can only like a post once");
+  } else {
+    let likeNumber = +li.innerText.split(" ")[0] + 1;
+    let newLike = {
+      user_id: localStorage.getItem("user_id"),
+      post_id: post.id,
+      number: likeNumber,
+    };
+    fetch(`${likesURL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newLike),
+    })
+      .then((resp) => resp.json())
+      .then((newInfo) => {
+        localStorage.setItem("Likes", newInfo.number);
+        localStorage.setItem("postId", newInfo.post_id);
+        li.innerText = `${localStorage.getItem("Likes")} ♥`;
+      });
   }
 }
 
-function addCommentForm(post, event) {
-  let clearCommentList = document.getElementById('comments-list')
+function addCommentForm(post) {
+  const saveButton = document.getElementById("comment-form");
 
+  saveButton.addEventListener("submit", (event) => {
+    saveComment(post, event);
+  });
 
-removeAllChildNodes(clearCommentList)
+  let clearCommentList = document.getElementById("comments-list");
+
+  removeAllChildNodes(clearCommentList);
 
   let commentModal = document.getElementById("comment-modal");
   commentModal.style.display = "block";
-  let ul = document.getElementById("comments-list");
+  let unorderedList = document.getElementById("comments-list");
   fetch(commentsURL)
     .then((resp) => resp.json())
     .then((comArray) =>
-      comArray.forEach((comment) => {
-        let li = document.createElement("li");
-        li.innerText = comment.body;
-        if (comment.post_id === post.id) {
-          ul.appendChild(li);
-          // closeCommentsForm();
-        }
-      })
+      comArray.forEach((comment) => renderComment(comment, post))
     );
-    const saveButton = document.getElementById('save-comment')
 
-    saveButton.addEventListener('click', (event) => {
-    saveComment(post, event);
-  })
-  commentForm().reset()
-  }
+}
 
-    
-
-function saveComment(post, event){
+function saveComment(post, event) {
   event.preventDefault();
   // let list = document.getElementById("comments-list");
-  
+
   // let listItem = document.createElement('li')
   // listItem.innerText = newComment
   // list.appendChild(listItem)
-  const newComment = document.getElementById('add-comment').value
+  const newComment = document.getElementById("add-comment").value;
   const commentSave = {
     body: newComment,
     user_id: localStorage.getItem("user_id"),
-    post_id: post.id
-  }
-  
-  
-    fetch(commentsURL, {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(commentSave),
-    }).then(resp => resp.json())
-    .then(newComment => renderComment(newComment))
-  
-  
+    post_id: post.id,
+  };
+
+  fetch(commentsURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(commentSave),
+  })
+    .then((resp) => resp.json())
+    .then((newComment) => renderComment(newComment, post));
+    commentForm().reset();
 }
 
-function renderComment(comment){
+function renderComment(comment, post) {
   let list = document.getElementById("comments-list");
-  const newComment = document.getElementById('add-comment').value
 
-  let listItem = document.createElement('li')
-  listItem.innerText = newComment
-  list.appendChild(listItem)
+  let listItem = document.createElement("li");
+  listItem.innerText = comment.body;
+  if (comment.post_id === post.id) {
+    list.appendChild(listItem);
+  }
 
+  removeAllChildNodes(parent);
 }
 
 function removeAllChildNodes(parent) {
   while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
+    parent.removeChild(parent.firstChild);
   }
 }
-
-
-
