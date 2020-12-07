@@ -195,4 +195,12 @@ li {
 </svg> */
   }
 
+  .gallery-item-user {
+    font-size: large;
+  }
+
+  .gallery-item-caption {
+    font-size: medium;
+  }
+
 
