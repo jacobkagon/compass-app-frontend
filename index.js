@@ -138,13 +138,7 @@ function renderPost(post) {
   const commentButton = document.createElement("button");
   commentButton.innerText = "View Comments";
   commentButton.addEventListener("click", () => {
-    let clearCommentList = document.getElementById('comments-list')
-    function removeAllChildNodes(parent) {
-      while (parent.firstChild) {
-          parent.removeChild(parent.firstChild);
-      }
-  }
-    removeAllChildNodes(clearCommentList)
+
     addCommentForm(post);
   });
 
@@ -340,7 +334,14 @@ function addLike(post, li) {
 }
 
 function addCommentForm(post, event) {
-  
+  let clearCommentList = document.getElementById('comments-list')
+
+  function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+removeAllChildNodes(clearCommentList)
 
   let commentModal = document.getElementById("comment-modal");
   commentModal.style.display = "block";
