@@ -62,6 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
     closeCommentsForm();
   });
 
+  document.getElementById("sign-out-btn").addEventListener('click', () => {
+    signOut()
+  })
+
   fetch(postsURL)
     .then((resp) => resp.json())
     .then((postsArray) =>
@@ -102,7 +106,7 @@ function renderPost(post) {
   // likes.classList.add("btn", "btn-primary", "grid-item-info");
   // likes.innerText = `${post.likes.length} Likes`;
   let gridItem = document.createElement("div");
-  gridItem.className = "grid-item";
+  gridItem.classList = "grid-item";
   // let comments = document.createElement('div')
   // comments.classList.add('btn', 'btn-primary', 'grid-item-info')
   // comments.innerText = `${post.comments.length} comments`
@@ -118,7 +122,7 @@ function renderPost(post) {
   let ul = document.createElement("ul");
 
   let li = document.createElement("button");
-  li.classList = "likes-button";
+  li.classList = "button1";
   li.type = "button";
   li.innerText = `${post.likes.length} ♥`;
 
@@ -135,8 +139,8 @@ function renderPost(post) {
     addLike(post, li);
   });
   const commentButton = document.createElement("button");
-  commentButton.classList = "comment-button"
-  // commentButton.innerText = "Comments";
+  commentButton.classList = "button1"
+  commentButton.innerText = "Comments";
   commentButton.addEventListener("click", () => {
     addCommentForm(post);
   });
@@ -303,7 +307,6 @@ function createPost(event) {
 
 function addLike(post, li) {
   let map = post.likes.map((like) => like.user_id);
-
   if (map.includes(+localStorage.getItem("user_id"))) {
     alert("You can only like a post once");
   } else {
@@ -371,13 +374,18 @@ function saveComment(post, event) {
     .then((resp) => resp.json())
     .then((newComment) => renderComment(newComment, post));
     commentForm().reset();
+
 }
 
 function renderComment(comment, post) {
   let list = document.getElementById("comments-list");
 
   let listItem = document.createElement("li");
-  listItem.innerText = comment.body;
+  if (comment.body === "") {
+    listItem.innerText = ""
+  } else {
+  listItem.innerText = `${comment.body}`;
+  }
   if (comment.post_id === post.id) {
     list.appendChild(listItem);
   }
@@ -389,4 +397,10 @@ function removeAllChildNodes(parent) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
   }
+}
+
+function signOut() {
+  localStorage.removeItem("user_id")
+  localStorage.removeItem("name")
+  alert("You've logged out")
 }
